@@ -1,4 +1,4 @@
--module(assignment1).
+-module(bitcoin_miner).
 -export([master/1, mining/3, start_worker/1]).
 
 start_worker(ServerName_IPAddress) ->
@@ -35,15 +35,15 @@ master(Noofzeroes) ->
     {StartingWCTime, _} = statistics(wall_clock),
     {StartingCPUTime, _} = statistics(runtime),
 
-    Mining5 = spawn(assignment1, mining, [Noofzeroes, 5, self()]),
-    Mining6 = spawn(assignment1, mining, [Noofzeroes, 6, self()]),
+    Mining5 = spawn(bitcoin_miner, mining, [Noofzeroes, 5, self()]),
+    Mining6 = spawn(bitcoin_miner, mining, [Noofzeroes, 6, self()]),
 
     Node1 = nodes(),
 
     if Node1 /= [] ->
         Worker1 = lists:nth(1, nodes()),
-        Mining7 = spawn(Worker1, assignment1, mining, [Noofzeroes, 7, self()]),
-        Mining8 = spawn(Worker1, assignment1, mining, [Noofzeroes, 8, self()]);
+        Mining7 = spawn(Worker1, bitcoin_miner, mining, [Noofzeroes, 7, self()]),
+        Mining8 = spawn(Worker1, bitcoin_miner, mining, [Noofzeroes, 8, self()]);
     Node1 == [] ->
         Mining7 = undefined,
         Mining8 = undefined
